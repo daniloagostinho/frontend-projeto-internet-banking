@@ -7,16 +7,24 @@ import { HomeComponent } from './componentes/home/home.component';
 import { SignupComponent } from './componentes/signup/signup.component';
 import { ReactiveFormsModule } from '@angular/forms';
 
+import { HttpClientModule } from '@angular/common/http';
+import { CodeVerificationComponent } from './componentes/code-verification/code-verification.component';
+import { StoreModule } from '@ngrx/store';
+import { registrationReducer } from './ngrx/reducers/registration.reducer';
+
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    SignupComponent
+    SignupComponent,
+    CodeVerificationComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    HttpClientModule,
+    StoreModule.forRoot({ registrationData: registrationReducer })
   ],
   providers: [],
   bootstrap: [AppComponent]
