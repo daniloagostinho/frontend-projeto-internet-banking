@@ -1,1 +1,20 @@
-/* You can add global styles to this file, and also import other style files */
+body {
+    background: linear-gradient(to right, #b8242b, #f47c3c);
+}
+
+.bg-internet-banking {
+    background-color: #b8242b;
+}
+
+.text-internet-banking {
+    color: #b8242b;
+}
+
+.btn-internet-banking {
+    background-color: #b8242b;
+    color: #fff;
+}
+
+.btn-internet-banking-bold {
+    font-weight: bold;
+}
