@@ -11,13 +11,15 @@ import { HttpClientModule } from '@angular/common/http';
 import { CodeVerificationComponent } from './componentes/code-verification/code-verification.component';
 import { StoreModule } from '@ngrx/store';
 import { registrationReducer } from './ngrx/reducers/registration.reducer';
+import { IdentityVerificationComponent } from './componentes/identity-verification/identity-verification.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     SignupComponent,
-    CodeVerificationComponent
+    CodeVerificationComponent,
+    IdentityVerificationComponent
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,34 @@
+<div class="container">
+    <div class="row justify-content-center align-items-center vh-100">
+        <div class="col-lg-4">
+            <div class="card border-0 shadow">
+                <div class="card-body p-5">
+                    <h3 class="text-internet-banking text-center mb-4">Verificação de identidade</h3>
+                    <p>Para verificar a sua identidade clique no botão a baixo para tirar uma selfie</p>
+                    <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" (click)="startCamera()" class="btn btn-internet-banking btn-block">Abrir a camera</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+            <video #video autoplay></video>
+        </div>
+        <div class="modal-footer">
+           <button (click)="capture()" class="btn btn-internet-banking btn-block" data-bs-dismiss="modal">Capture</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<img [src]="capturedImage" *ngIf="capturedImage" alt="Capture preview">

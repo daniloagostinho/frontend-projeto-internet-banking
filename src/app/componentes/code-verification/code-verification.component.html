@@ -8,7 +8,7 @@
             <form [formGroup]="codeVerificationForm" (ngSubmit)="onSubmit()">
               <div class="form-group mb-4">
                 <label for="senha" class="text-internet-banking">Código de verificação</label>
-                <input type="text" formControlName="code" class="form-control" id="codigoVerificacao" placeholder="Código de verificação">
+                <input type="text" formControlName="code" class="form-control" id="codigoVerificacao" maxlength="4" placeholder="Código de verificação">
               </div>
               <button type="submit" class="btn btn-internet-banking btn-block">Validar código</button>
             </form>

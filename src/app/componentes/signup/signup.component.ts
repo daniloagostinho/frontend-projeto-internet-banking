@@ -3,7 +3,9 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
+import { CodeResponse } from 'src/app/interfaces/code-response.interface';
 import { storeRegistrationData } from 'src/app/ngrx/actions/registration.actions';
+import { BankingService } from 'src/app/services/banking.service';
 
 @Component({
   selector: 'app-signup',
@@ -16,14 +18,15 @@ export class SignupComponent implements OnInit {
   constructor(
     private formBuilder: FormBuilder,
     private store: Store,
-    private router: Router) { }
+    private router: Router,
+    private bankService: BankingService) { }
 
   ngOnInit(): void {
     this.signupForm = this.formBuilder.group({
-      nome: ['', Validators.required],
+      name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
       cpf: ['', Validators.required],
-      senha: ['', Validators.required]
+      password: ['', Validators.required]
     });
   }
 
@@ -31,7 +34,34 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.valid) {
       // Faz algo com os dados do formulário.
       this.store.dispatch(storeRegistrationData({ registrationData: this.signupForm.value }));
-      this.router.navigate(['/code-verification'])
+      const { name, email, cpf, password } = this.signupForm.value;
+      const emailObj = {
+        email
+      }
+      const accountObj = {
+        name, 
+        email,
+        cpf, 
+        password
+      }
+
+      this.bankService.createAccount(accountObj).subscribe({
+        next: () => {
+          this.bankService.sendCodeSMS(JSON.stringify(emailObj)).subscribe({
+            next: ((res: CodeResponse) => {
+              if (res) {
+                this.router.navigate(['/code-verification']);
+              }
+            }),
+            error: ((error: HttpErrorResponse) => {
+              console.log(error)
+            })
+          });
+        },
+        error: ((err: HttpErrorResponse) => {
+          console.error(err)
+        })
+      })
     } else {
       // Trata erros de validação.
     }

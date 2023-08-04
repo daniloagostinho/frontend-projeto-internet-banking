@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './componentes/home/home.component';
 import { SignupComponent } from './componentes/signup/signup.component';
 import { CodeVerificationComponent } from './componentes/code-verification/code-verification.component';
+import { IdentityVerificationComponent } from './componentes/identity-verification/identity-verification.component';
 
 const routes: Routes = [
   {
@@ -13,6 +14,9 @@ const routes: Routes = [
   },
   {
     path: 'code-verification', component: CodeVerificationComponent
+  },
+  {
+    path: 'identity-verification', component: IdentityVerificationComponent
   }
 ];
 
