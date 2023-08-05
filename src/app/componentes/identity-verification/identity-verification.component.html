@@ -6,6 +6,9 @@
                     <h3 class="text-internet-banking text-center mb-4">Verificação de identidade</h3>
                     <p>Para verificar a sua identidade clique no botão a baixo para tirar uma selfie</p>
                     <button data-bs-toggle="modal" data-bs-target="#exampleModal" type="button" (click)="startCamera()" class="btn btn-internet-banking btn-block">Abrir a camera</button>
+                    <canvas #canvas style="display:none;"></canvas>
+                    <img [src]="capturedImage" *ngIf="capturedImage" alt="Capture preview">
+
                 </div>
             </div>
         </div>
@@ -30,5 +33,3 @@
       </div>
     </div>
   </div>
-
-<img [src]="capturedImage" *ngIf="capturedImage" alt="Capture preview">

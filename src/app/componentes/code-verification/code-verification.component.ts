@@ -30,9 +30,6 @@ export class CodeVerificationComponent {
 
   ngOnInit() {
     this.registrationData$ = this.store.select(selectRegistrationDataValues);
-    this.codeVerificationForm = this.formBuilder.group({
-      code: ['', Validators.required]
-    });
 
     this.subscription = this.registrationData$
     .subscribe(
@@ -46,25 +43,24 @@ export class CodeVerificationComponent {
         })
       }
     );
+    
+    this.codeVerificationForm = this.formBuilder.group({
+      code: ['', Validators.required]
+    });
   }
 
   onSubmit(): void {
-
     if (this.codeVerificationForm.valid) {
       // Faz algo com os dados do formulário.
       const { code } = this.codeVerificationForm.value;
-
-      console.log(typeof code)
-
       const verificationCode = {
         email: this.state.email,
         code
       }
-      
-       this.subscription = this.bankingService.codeVerificationSMS(JSON.stringify(verificationCode)).subscribe(
+      this.subscription = this.bankingService.codeVerificationSMS(JSON.stringify(verificationCode)).subscribe(
         {
           next: ((res: CodeResponse) => {
-            this.router.navigate(['/identity-verification'])
+            this.router.navigate(['/complete-registration'])
           }),
           error: ((error: HttpErrorResponse) => {
             console.log(error)

@@ -1,4 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-identity-verification',
@@ -6,10 +7,12 @@ import { Component, ElementRef, ViewChild } from '@angular/core';
   styleUrls: ['./identity-verification.component.scss']
 })
 export class IdentityVerificationComponent {
-  @ViewChild('video', { static: true }) videoElement!: ElementRef;
-  @ViewChild('canvas', { static: true }) canvas!: ElementRef;
-  capturedImage!: string;
+  @ViewChild('video', { static: false }) videoElement!: ElementRef;
+  @ViewChild('canvas', { static: false }) canvas!: ElementRef;
+  capturedImage!: any;
   
+  constructor(private sanitizer: DomSanitizer) { }
+
   videoWidth = 0;
   videoHeight = 0;
 
@@ -45,7 +48,7 @@ export class IdentityVerificationComponent {
   capture() {
     this.canvas.nativeElement.getContext('2d').drawImage(this.videoElement.nativeElement, 0, 0, this.videoWidth, this.videoHeight);
     let imgData = this.canvas.nativeElement.toDataURL("image/png");
-    this.capturedImage = imgData;
+    this.capturedImage = this.sanitizer.bypassSecurityTrustResourceUrl(imgData);
     console.log(imgData);
   }
 }

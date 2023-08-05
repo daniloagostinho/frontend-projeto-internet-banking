@@ -12,6 +12,7 @@ import { CodeVerificationComponent } from './componentes/code-verification/code-
 import { StoreModule } from '@ngrx/store';
 import { registrationReducer } from './ngrx/reducers/registration.reducer';
 import { IdentityVerificationComponent } from './componentes/identity-verification/identity-verification.component';
+import { CompleteRegistrationComponent } from './componentes/complete-registration/complete-registration.component';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,8 @@ import { IdentityVerificationComponent } from './componentes/identity-verificati
     HomeComponent,
     SignupComponent,
     CodeVerificationComponent,
-    IdentityVerificationComponent
+    IdentityVerificationComponent,
+    CompleteRegistrationComponent
   ],
   imports: [
     BrowserModule,

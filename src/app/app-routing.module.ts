@@ -4,6 +4,7 @@ import { HomeComponent } from './componentes/home/home.component';
 import { SignupComponent } from './componentes/signup/signup.component';
 import { CodeVerificationComponent } from './componentes/code-verification/code-verification.component';
 import { IdentityVerificationComponent } from './componentes/identity-verification/identity-verification.component';
+import { CompleteRegistrationComponent } from './componentes/complete-registration/complete-registration.component';
 
 const routes: Routes = [
   {
@@ -16,7 +17,7 @@ const routes: Routes = [
     path: 'code-verification', component: CodeVerificationComponent
   },
   {
-    path: 'identity-verification', component: IdentityVerificationComponent
+    path: 'complete-registration', component: CompleteRegistrationComponent
   }
 ];
 

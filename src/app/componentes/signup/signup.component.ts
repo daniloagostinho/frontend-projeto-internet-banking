@@ -34,34 +34,20 @@ export class SignupComponent implements OnInit {
     if (this.signupForm.valid) {
       // Faz algo com os dados do formulário.
       this.store.dispatch(storeRegistrationData({ registrationData: this.signupForm.value }));
-      const { name, email, cpf, password } = this.signupForm.value;
+      const { email } = this.signupForm.value;
       const emailObj = {
         email
       }
-      const accountObj = {
-        name, 
-        email,
-        cpf, 
-        password
-      }
-
-      this.bankService.createAccount(accountObj).subscribe({
-        next: () => {
-          this.bankService.sendCodeSMS(JSON.stringify(emailObj)).subscribe({
-            next: ((res: CodeResponse) => {
-              if (res) {
-                this.router.navigate(['/code-verification']);
-              }
-            }),
-            error: ((error: HttpErrorResponse) => {
-              console.log(error)
-            })
-          });
-        },
-        error: ((err: HttpErrorResponse) => {
-          console.error(err)
+      this.bankService.sendCodeSMS(JSON.stringify(emailObj)).subscribe({
+        next: ((res: CodeResponse) => {
+          if (res) {
+            this.router.navigate(['/code-verification']);
+          }
+        }),
+        error: ((error: HttpErrorResponse) => {
+          console.log(error)
         })
-      })
+      });
     } else {
       // Trata erros de validação.
     }
