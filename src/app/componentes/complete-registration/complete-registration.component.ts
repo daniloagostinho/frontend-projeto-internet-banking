@@ -2,7 +2,7 @@ import { HttpErrorResponse } from '@angular/common/http';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Store } from '@ngrx/store';
-import { Observable, Subscription } from 'rxjs';
+import { Observable, Subscription, switchMap } from 'rxjs';
 import { CodeResponse } from 'src/app/interfaces/code-response.interface';
 import { RegisterState } from 'src/app/interfaces/register-state.interface';
 import { Register } from 'src/app/interfaces/register.interface';
@@ -39,33 +39,35 @@ export class CompleteRegistrationComponent {
       }
     );
   }
-  completeRegistration() {
+  
+  createAccountObject(): any {
     const { name, email, cpf, password } = this.state;
-    const emailObj = {
-      email
+    return { name, email, cpf, password };
+  }
+
+  createEmailObject(): any {
+    return { email: this.state.email };
+  }
+
+  navigateToHome(res: CodeResponse): void {
+    if (res) {
+        this.router.navigate(['/']);
     }
-    const accountObj = {
-      name, 
-      email,
-      cpf, 
-      password
-    }
-    this.bankService.createAccount(accountObj).subscribe({
-      next: () => {
-        this.bankService.sendCodeSMS(JSON.stringify(emailObj)).subscribe({
-          next: ((res: CodeResponse) => {
-            if (res) {
-              this.router.navigate(['/']);
-            }
-          }),
-          error: ((error: HttpErrorResponse) => {
-            console.log(error)
-          })
-        });
-      },
-      error: ((err: HttpErrorResponse) => {
-        console.error(err)
-      })
-    })
+  }
+
+  handleError(error: HttpErrorResponse): void {
+    console.error(error);
+  }
+
+  completeRegistration(): void {
+    const accountObj = this.createAccountObject();
+    const emailObj = this.createEmailObject();
+
+    this.bankService.createAccount(accountObj).pipe(
+        switchMap(() => this.bankService.sendCodeSMS(JSON.stringify(emailObj)))
+    ).subscribe({
+        next: this.navigateToHome.bind(this),
+        error: this.handleError.bind(this)
+    });
   }
 } 

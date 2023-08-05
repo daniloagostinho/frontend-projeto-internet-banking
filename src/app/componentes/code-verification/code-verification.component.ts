@@ -29,46 +29,66 @@ export class CodeVerificationComponent {
     private router: Router) { }
 
   ngOnInit() {
-    this.registrationData$ = this.store.select(selectRegistrationDataValues);
+    this.createForm();
+    this.subscribeToRegistrationData();
+  }
 
-    this.subscription = this.registrationData$
-    .subscribe(
-      {
-        next: ((res: RegisterState) => {
-          console.log('state res -->>> ', res.registrationData)
-          this.state = res.registrationData;
-        }),
-        error: ((error) => {
-          console.log(error)
-        })
-      }
-    );
-    
+  createForm(): void {
     this.codeVerificationForm = this.formBuilder.group({
       code: ['', Validators.required]
     });
   }
 
+  selectRegistrationData(): Observable<RegisterState> {
+    return this.store.select(selectRegistrationDataValues);
+  }
+
+  handleRegistrationData(res: RegisterState): void {
+    console.log('state res -->>> ', res.registrationData);
+    this.state = res.registrationData;
+  }
+
+  subscribeToRegistrationData(): void {
+    this.subscription = this.selectRegistrationData().subscribe({
+      next: (res: RegisterState) => this.handleRegistrationData(res),
+      error: (error) => console.log(error),
+    });
+  }
+
+  validateForm(): boolean {
+    return this.codeVerificationForm.valid;
+  }
+
+  buildVerificationCode(code: string): string {
+    const verificationCode = {
+      email: this.state.email,
+      code
+    };
+    return JSON.stringify(verificationCode);
+  }
+
+  verifyCodeSMS(verificationCode: string): Observable<CodeResponse> {
+    return this.bankingService.codeVerificationSMS(verificationCode);
+  }
+
+  navigateToCompleteRegistration(): void {
+    this.router.navigate(['/complete-registration']);
+  }
+
   onSubmit(): void {
-    if (this.codeVerificationForm.valid) {
-      // Faz algo com os dados do formulário.
+    if (this.validateForm()) {
       const { code } = this.codeVerificationForm.value;
-      const verificationCode = {
-        email: this.state.email,
-        code
-      }
-      this.subscription = this.bankingService.codeVerificationSMS(JSON.stringify(verificationCode)).subscribe(
-        {
-          next: ((res: CodeResponse) => {
-            this.router.navigate(['/complete-registration'])
-          }),
-          error: ((error: HttpErrorResponse) => {
-            console.log(error)
-          })
+      const verificationCode = this.buildVerificationCode(code);
+      this.subscription = this.verifyCodeSMS(verificationCode).subscribe({
+        next: (res: CodeResponse) => {
+          this.navigateToCompleteRegistration();
         },
-      )
+        error: (error: HttpErrorResponse) => {
+          console.log(error);
+        }
+      });
     } else {
-      // Trata erros de validação.
+      // Tratar erros de validação.
     }
   }
 
