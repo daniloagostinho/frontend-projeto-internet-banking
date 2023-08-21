@@ -10,7 +10,10 @@
                 <label for="senha" class="text-internet-banking">Código de verificação</label>
                 <input type="text" formControlName="code" class="form-control" id="codigoVerificacao" maxlength="4" placeholder="Código de verificação">
               </div>
-              <button type="submit" class="btn btn-internet-banking btn-block">Validar código</button>
+              <button type="submit" class="btn btn-internet-banking w-100" [disabled]="isLoading">
+                <span *ngIf="!isLoading">Validar código</span>
+                <div *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></div>
+              </button>
             </form>
           </div>
         </div>

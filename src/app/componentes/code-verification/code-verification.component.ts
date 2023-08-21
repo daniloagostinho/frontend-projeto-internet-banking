@@ -10,6 +10,7 @@ import { Observable, Subscription, map } from 'rxjs';
 import { RegisterState } from 'src/app/interfaces/register-state.interface';
 import { CodeResponse } from 'src/app/interfaces/code-response.interface';
 import { Router } from '@angular/router';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-code-verification',
@@ -17,16 +18,17 @@ import { Router } from '@angular/router';
   styleUrls: ['./code-verification.component.scss']
 })
 export class CodeVerificationComponent {
-  codeVerificationForm!: FormGroup;
-  registrationData$!: Observable<RegisterState>;
+  public codeVerificationForm!: FormGroup;
   private subscription!: Subscription;
   private state!: Register;
+  public isLoading: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
     private bankingService: BankingService,
     private store: Store,
-    private router: Router) { }
+    private router: Router,
+    private notificationService: NotificationService) { }
 
   ngOnInit() {
     this.createForm();
@@ -39,27 +41,26 @@ export class CodeVerificationComponent {
     });
   }
 
-  selectRegistrationData(): Observable<RegisterState> {
+  public selectRegistrationData(): Observable<RegisterState> {
     return this.store.select(selectRegistrationDataValues);
   }
 
-  handleRegistrationData(res: RegisterState): void {
-    console.log('state res -->>> ', res.registrationData);
+  public handleRegistrationData(res: RegisterState): void {
     this.state = res.registrationData;
   }
 
-  subscribeToRegistrationData(): void {
+  public subscribeToRegistrationData(): void {
     this.subscription = this.selectRegistrationData().subscribe({
       next: (res: RegisterState) => this.handleRegistrationData(res),
       error: (error) => console.log(error),
     });
   }
 
-  validateForm(): boolean {
+  public validateForm(): boolean {
     return this.codeVerificationForm.valid;
   }
 
-  buildVerificationCode(code: string): string {
+  public buildVerificationCode(code: string): string {
     const verificationCode = {
       email: this.state.email,
       code
@@ -67,28 +68,34 @@ export class CodeVerificationComponent {
     return JSON.stringify(verificationCode);
   }
 
-  verifyCodeSMS(verificationCode: string): Observable<CodeResponse> {
+  public verifyCodeSMS(verificationCode: string): Observable<CodeResponse> {
     return this.bankingService.codeVerificationSMS(verificationCode);
   }
 
-  navigateToCompleteRegistration(): void {
+  public navigateToCompleteRegistration(): void {
     this.router.navigate(['/complete-registration']);
   }
 
-  onSubmit(): void {
+  public handleError(error: string): void {
+    this.notificationService.showError(error);
+  }
+
+  public onSubmit(): void {
     if (this.validateForm()) {
+      this.isLoading = true;
       const { code } = this.codeVerificationForm.value;
       const verificationCode = this.buildVerificationCode(code);
       this.subscription = this.verifyCodeSMS(verificationCode).subscribe({
-        next: (res: CodeResponse) => {
+        next: () => {
           this.navigateToCompleteRegistration();
         },
-        error: (error: HttpErrorResponse) => {
-          console.log(error);
-        }
-      });
+        error: (error: string) => {
+          this.handleError(error);
+          this.isLoading = false;
+        }});
     } else {
       // Tratar erros de validação.
+      return;
     }
   }
 

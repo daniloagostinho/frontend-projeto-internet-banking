@@ -21,7 +21,10 @@
                 <label for="senha" class="text-internet-banking">Senha</label>
                 <input type="password" formControlName="password" class="form-control" id="senha" placeholder="Crie uma senha">
               </div>
-              <button type="submit" class="btn btn-internet-banking btn-block">Continuar</button>
+              <button type="submit" class="btn btn-internet-banking btn-block w-100" [disabled]="isLoading">
+                <span *ngIf="!isLoading">Continuar</span>
+                <div *ngIf="isLoading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></div>
+              </button>
             </form>
           </div>
         </div>

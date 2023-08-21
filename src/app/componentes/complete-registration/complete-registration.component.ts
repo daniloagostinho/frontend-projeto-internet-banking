@@ -8,6 +8,7 @@ import { RegisterState } from 'src/app/interfaces/register-state.interface';
 import { Register } from 'src/app/interfaces/register.interface';
 import { selectRegistrationDataValues } from 'src/app/ngrx/selector/registration.selectors';
 import { BankingService } from 'src/app/services/banking.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
   selector: 'app-complete-registration',
@@ -19,7 +20,11 @@ export class CompleteRegistrationComponent {
   registrationData$!: Observable<RegisterState>;
   private state!: Register;
 
-  constructor(private store: Store, private bankService: BankingService, private router: Router) {
+  constructor(
+    private store: Store,
+    private bankService: BankingService,
+    private router: Router,
+    private notificationService: NotificationService) {
 
   }
   
@@ -55,8 +60,8 @@ export class CompleteRegistrationComponent {
     }
   }
 
-  handleError(error: HttpErrorResponse): void {
-    console.error(error);
+  handleError(error: string): void {
+    this.notificationService.showError(error);
   }
 
   completeRegistration(): void {

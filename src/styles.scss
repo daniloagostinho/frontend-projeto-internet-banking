@@ -1,5 +1,7 @@
+@import '../node_modules/ngx-toastr/toastr.css';
+
 body {
-    background: linear-gradient(to right, #b8242b, #f47c3c);
+    background: linear-gradient(to right, #e0e0e0, #b0b0b0);
 }
 
 .bg-internet-banking {
@@ -17,4 +19,8 @@ body {
 
 .btn-internet-banking-bold {
     font-weight: bold;
+}
+
+label {
+    margin-bottom: 5px;
 }

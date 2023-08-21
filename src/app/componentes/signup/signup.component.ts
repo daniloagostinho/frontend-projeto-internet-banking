@@ -15,7 +15,7 @@ import { BankingService } from 'src/app/services/banking.service';
 })
 export class SignupComponent implements OnInit {
   signupForm!: FormGroup;
-
+  isLoading: boolean = false;
   constructor(
     private formBuilder: FormBuilder,
     private store: Store,
@@ -26,7 +26,7 @@ export class SignupComponent implements OnInit {
     this.createForm();
   }
 
-  createForm(): void {
+  public createForm(): void {
     this.signupForm = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [Validators.required, Validators.email]],
@@ -35,24 +35,25 @@ export class SignupComponent implements OnInit {
     });
   }
 
-  validateForm(): boolean {
+  public validateForm(): boolean {
     return this.signupForm.valid;
   }
 
-  dispatchRegistrationData(): void {
+  public dispatchRegistrationData(): void {
     this.store.dispatch(storeRegistrationData({ registrationData: this.signupForm.value }));
   }
 
-  sendCodeSMS(emailObj: string): Observable<CodeResponse> {
+  public sendCodeSMS(emailObj: string): Observable<CodeResponse> {
     return this.bankService.sendCodeSMS(emailObj);
   }
 
-  navigateToCodeVerification(): void {
+  public navigateToCodeVerification(): void {
     this.router.navigate(['/code-verification']);
   }
 
-  onSubmit(): void {
+  public onSubmit(): void {
     if (this.validateForm()) {
+      this.isLoading = true;
       this.dispatchRegistrationData();
       const { email } = this.signupForm.value;
       const emailObj = {
