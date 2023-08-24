@@ -3,9 +3,8 @@ import { RouterModule, Routes } from '@angular/router';
 import { HomeComponent } from './componentes/home/home.component';
 import { SignupComponent } from './componentes/signup/signup.component';
 import { CodeVerificationComponent } from './componentes/code-verification/code-verification.component';
-import { IdentityVerificationComponent } from './componentes/identity-verification/identity-verification.component';
 import { CompleteRegistrationComponent } from './componentes/complete-registration/complete-registration.component';
-import { ResetPasswordComponent } from './componentes/reset-password/reset-password.component';
+import { RecovertPasswordComponent } from './componentes/recover-password/recover-password.component';
 
 const routes: Routes = [
   {
@@ -15,7 +14,7 @@ const routes: Routes = [
     path: 'signup', component: SignupComponent
   },
   {
-    path: 'reset-password', component: ResetPasswordComponent
+    path: 'recover-password', component: RecovertPasswordComponent
   },
   {
     path: 'code-verification', component: CodeVerificationComponent

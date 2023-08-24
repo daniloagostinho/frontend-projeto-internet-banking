@@ -15,7 +15,7 @@ import { IdentityVerificationComponent } from './componentes/identity-verificati
 import { CompleteRegistrationComponent } from './componentes/complete-registration/complete-registration.component';
 import { ToastrModule } from 'ngx-toastr';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { ResetPasswordComponent } from './componentes/reset-password/reset-password.component';
+import { RecovertPasswordComponent } from './componentes/recover-password/recover-password.component';
 
 @NgModule({
   declarations: [
@@ -25,7 +25,7 @@ import { ResetPasswordComponent } from './componentes/reset-password/reset-passw
     CodeVerificationComponent,
     IdentityVerificationComponent,
     CompleteRegistrationComponent,
-    ResetPasswordComponent
+    RecovertPasswordComponent
   ],
   imports: [
     BrowserModule,

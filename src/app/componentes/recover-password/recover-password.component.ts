@@ -3,11 +3,11 @@ import { BankingService } from 'src/app/services/banking.service';
 import { NotificationService } from 'src/app/services/notification.service';
 
 @Component({
-  selector: 'app-reset-password',
-  templateUrl: './reset-password.component.html',
-  styleUrls: ['./reset-password.component.scss']
+  selector: 'app-recover-password',
+  templateUrl: './recover-password.component.html',
+  styleUrls: ['./recover-password.component.scss']
 })
-export class ResetPasswordComponent {
+export class RecovertPasswordComponent {
   public email: string = '';
   public isLoading: boolean = false;
 
@@ -17,8 +17,9 @@ export class ResetPasswordComponent {
     this.isLoading = true;
     const buildEmail = this.buildEmailToSendApi();
     this.bankService.recoverPassword(buildEmail).subscribe({
-      next: () => {
-
+      next: (res: any) => {
+        this.isLoading = false;
+        this.notificationService.showSucces(res.message)
       }, 
       error: (error: string) => {
         this.handleError(error);
