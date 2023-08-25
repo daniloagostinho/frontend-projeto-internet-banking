@@ -4,6 +4,8 @@ import { Observable, catchError, throwError } from 'rxjs';
 import { Register } from '../interfaces/register.interface';
 import { RegisterResponse } from '../interfaces/register-response.interface';
 import { CodeResponse } from '../interfaces/code-response.interface';
+import { Router } from '@angular/router';
+import { NotificationService } from './notification.service';
 
 
 const httpOptions = {
@@ -17,10 +19,10 @@ const httpOptions = {
   providedIn: 'root'
 })
 export class BankingService {
-
+  
   private baseUrl = 'http://localhost:3000/user'; // Substitua por sua URL de API real
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) { }
 
   public createAccount(accountData: Partial<Register>): Observable<RegisterResponse> {
     return this.http.post<RegisterResponse>(`${this.baseUrl}/register`, accountData).pipe(
@@ -44,6 +46,20 @@ export class BankingService {
     );
   }
 
+  public login(credentials: any): void {
+    this.http.post<any>(`${this.baseUrl}/login`, credentials, httpOptions).pipe(
+      catchError(this.handleError)
+    ).subscribe({
+      next: (res: any) => {
+        localStorage.setItem('token', res.token)
+        this.router.navigate(['/dashboard']);
+      },
+      error: (error: any) => {
+        this.notificationService.showError(error)
+      }
+    })
+  }
+
   public resetPassword(token: string, newPassword: string): Observable<any> {
     const body = {
       token: token,
@@ -56,7 +72,7 @@ export class BankingService {
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {
-    if (error.status == 400 && error.error.error) {
+    if (error.error.error) {
       return throwError(error.error.error)
     }
     return throwError('Algo deu errado; por favor, tente novamente mais tarde.');

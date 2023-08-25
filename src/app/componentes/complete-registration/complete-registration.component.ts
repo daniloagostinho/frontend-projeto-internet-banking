@@ -66,8 +66,7 @@ export class CompleteRegistrationComponent {
     const accountObj = this.createAccountObject();
 
     this.bankService.createAccount(accountObj).subscribe({
-      next: (res: any) => {
-        localStorage.setItem('register', JSON.stringify(res))
+      next: () => {
         this.navigateToHome();
       },
       error: this.handleError.bind(this)
