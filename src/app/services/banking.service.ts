@@ -41,7 +41,7 @@ export class BankingService {
   public recoverPassword(email: any): Observable<any> {
     return this.http.post<any>(`${this.baseUrl}/recover`, email, httpOptions).pipe(
       catchError(this.handleError)
-    );;
+    );
   }
 
   public resetPassword(token: string, newPassword: string): Observable<any> {
@@ -50,7 +50,9 @@ export class BankingService {
       password: newPassword
     };
 
-    return this.http.post(`${this.baseUrl}/reset`, body, httpOptions);
+    return this.http.post(`${this.baseUrl}/reset`, body, httpOptions).pipe(
+      catchError(this.handleError)
+    )
   }
 
   private handleError(error: HttpErrorResponse): Observable<never> {

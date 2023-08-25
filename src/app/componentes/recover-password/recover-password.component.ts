@@ -20,6 +20,7 @@ export class RecovertPasswordComponent {
       next: (res: any) => {
         this.isLoading = false;
         this.notificationService.showSucces(res.message)
+        localStorage.setItem('resetPasswordToken', JSON.stringify(res.resetPassWordToken))
       }, 
       error: (error: string) => {
         this.handleError(error);
