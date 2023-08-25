@@ -20,34 +20,34 @@ const httpOptions = {
 })
 export class BankingService {
   
-  private baseUrl = 'http://localhost:3000/user'; // Substitua por sua URL de API real
+  private baseUrl = 'http://localhost:3000'; // Substitua por sua URL de API real
 
   constructor(private http: HttpClient, private router: Router, private notificationService: NotificationService) { }
 
   public createAccount(accountData: Partial<Register>): Observable<RegisterResponse> {
-    return this.http.post<RegisterResponse>(`${this.baseUrl}/register`, accountData).pipe(
+    return this.http.post<RegisterResponse>(`${this.baseUrl}/users/register`, accountData).pipe(
       catchError(this.handleError)
     );
   }
 
   public codeVerificationSMS(codeSMS: string): Observable<CodeResponse> {
-    return this.http.post<CodeResponse>(`${this.baseUrl}/validate/verification-code`, codeSMS, httpOptions).pipe(
+    return this.http.post<CodeResponse>(`${this.baseUrl}/users/validate/verification-code`, codeSMS, httpOptions).pipe(
       catchError(this.handleError)
     );
   }
 
   public sendCodeSMS(email: string): Observable<CodeResponse> {
-    return this.http.post<CodeResponse>(`${this.baseUrl}/send/code-verification`, email, httpOptions);
+    return this.http.post<CodeResponse>(`${this.baseUrl}/users/send/code-verification`, email, httpOptions);
   }
 
   public recoverPassword(email: any): Observable<any> {
-    return this.http.post<any>(`${this.baseUrl}/recover`, email, httpOptions).pipe(
+    return this.http.post<any>(`${this.baseUrl}/users/recover`, email, httpOptions).pipe(
       catchError(this.handleError)
     );
   }
 
   public login(credentials: any): void {
-    this.http.post<any>(`${this.baseUrl}/login`, credentials, httpOptions).pipe(
+    this.http.post<any>(`${this.baseUrl}/users/login`, credentials, httpOptions).pipe(
       catchError(this.handleError)
     ).subscribe({
       next: (res: any) => {
