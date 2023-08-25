@@ -27,24 +27,24 @@ export class CompleteRegistrationComponent {
     private notificationService: NotificationService) {
 
   }
-  
+
   ngOnInit() {
     this.registrationData$ = this.store.select(selectRegistrationDataValues);
 
     this.subscription = this.registrationData$
-    .subscribe(
-      {
-        next: ((res: RegisterState) => {
-          console.log('state res -->>> ', res.registrationData)
-          this.state = res.registrationData;
-        }),
-        error: ((error) => {
-          console.log(error)
-        })
-      }
-    );
+      .subscribe(
+        {
+          next: ((res: RegisterState) => {
+            console.log('state res -->>> ', res.registrationData)
+            this.state = res.registrationData;
+          }),
+          error: ((error) => {
+            console.log(error)
+          })
+        }
+      );
   }
-  
+
   createAccountObject(): any {
     const { name, email, cpf, password } = this.state;
     return { name, email, cpf, password };
@@ -54,10 +54,8 @@ export class CompleteRegistrationComponent {
     return { email: this.state.email };
   }
 
-  navigateToHome(res: CodeResponse): void {
-    if (res) {
-        this.router.navigate(['/']);
-    }
+  navigateToHome(): void {
+    this.router.navigate(['/']);
   }
 
   handleError(error: string): void {
@@ -66,13 +64,13 @@ export class CompleteRegistrationComponent {
 
   completeRegistration(): void {
     const accountObj = this.createAccountObject();
-    const emailObj = this.createEmailObject();
 
-    this.bankService.createAccount(accountObj).pipe(
-        switchMap(() => this.bankService.sendCodeSMS(JSON.stringify(emailObj)))
-    ).subscribe({
-        next: this.navigateToHome.bind(this),
-        error: this.handleError.bind(this)
+    this.bankService.createAccount(accountObj).subscribe({
+      next: (res: any) => {
+        localStorage.setItem('token', JSON.stringify(res))
+        this.navigateToHome();
+      },
+      error: this.handleError.bind(this)
     });
   }
 } 

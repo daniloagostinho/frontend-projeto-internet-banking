@@ -3,9 +3,10 @@
         <div class="col-lg-4">
             <div class="card border-0 shadow">
                 <div class="card-body p-5">
-                    <h3 class="text-internet-banking text-center mb-4">Conta criada com sucesso!</h3>
-                    <p>Para navegar para a pagina de login clique no link abaixo:</p>
-                    <button type="button" [routerLink]="['/']" class="btn btn-internet-banking btn-block">Ir para página de login</button>
+                    <h3 class="text-internet-banking text-center mb-4">Finalizar cadastro!</h3>
+                    <p>Para finalizar o cadastro clique no botão abaixo:</p>
+                    <button type="button"  class="btn btn-secondary btn-block">Editar dados</button>
+                    <button type="button" (click)="completeRegistration()" class="btn btn-internet-banking btn-block">Finalizar cadastro</button>
                 </div>
             </div>
         </div>

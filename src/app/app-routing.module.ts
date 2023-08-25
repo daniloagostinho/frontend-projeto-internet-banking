@@ -5,6 +5,7 @@ import { SignupComponent } from './componentes/signup/signup.component';
 import { CodeVerificationComponent } from './componentes/code-verification/code-verification.component';
 import { CompleteRegistrationComponent } from './componentes/complete-registration/complete-registration.component';
 import { RecovertPasswordComponent } from './componentes/recover-password/recover-password.component';
+import { ResetPasswordComponent } from './componentes/reset-password/reset-password.component';
 
 const routes: Routes = [
   {
@@ -15,6 +16,9 @@ const routes: Routes = [
   },
   {
     path: 'recover-password', component: RecovertPasswordComponent
+  },
+  {
+    path: 'reset-password', component: ResetPasswordComponent
   },
   {
     path: 'code-verification', component: CodeVerificationComponent

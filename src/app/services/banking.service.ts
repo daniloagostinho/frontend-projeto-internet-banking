@@ -33,7 +33,7 @@ export class BankingService {
       catchError(this.handleError)
     );
   }
-  
+
   public sendCodeSMS(email: string): Observable<CodeResponse> {
     return this.http.post<CodeResponse>(`${this.baseUrl}/send/code-verification`, email, httpOptions);
   }
@@ -44,10 +44,19 @@ export class BankingService {
     );;
   }
 
+  public resetPassword(token: string, newPassword: string): Observable<any> {
+    const body = {
+      token: token,
+      password: newPassword
+    };
+
+    return this.http.post(`${this.baseUrl}/reset`, body, httpOptions);
+  }
+
   private handleError(error: HttpErrorResponse): Observable<never> {
-    if(error.status == 400 && error.error.error) {
+    if (error.status == 400 && error.error.error) {
       return throwError(error.error.error)
-    }    
+    }
     return throwError('Algo deu errado; por favor, tente novamente mais tarde.');
   }
 }
